@@ -8,7 +8,6 @@ import { Cliente } from './entities/cliente.entity';
 export class ClientesService {
   constructor(private prisma: PrismaService) {}
 
-
   /**Converte o objeto generico para a entidade cliente */
   private mapToEntity(cliente: any): Cliente {
     return {
@@ -24,7 +23,13 @@ export class ClientesService {
   /** Criando novo Cliente */
   async create(createClienteDto: CreateClienteDto): Promise<Cliente> {
     const cliente = await this.prisma.cliente.create({
-      data: createClienteDto,
+      data: {
+        nome: createClienteDto.nome,
+        email: createClienteDto.email,
+        telefone: createClienteDto.telefone,
+        endereco: createClienteDto.endereco,
+        dataCadastro: new Date(),
+      },
     });
 
     return this.mapToEntity(cliente);
@@ -34,25 +39,23 @@ export class ClientesService {
   async findAll(): Promise<Cliente[]> {
     const clientes = await this.prisma.cliente.findMany();
 
-    return clientes.map(
-      clientes => this.mapToEntity(clientes)
-    );
+    return clientes.map((clientes) => this.mapToEntity(clientes));
   }
 
   /** Encontrando o cliente pelo seu ID  */
   async findOne(id: String) {
-    const cliente = await this.prisma.cliente.findMany({
+    const cliente = await this.prisma.cliente.findUnique({
       where: { id: id.toString() },
     });
-    
-    return cliente.map(
-      clientes => this.mapToEntity(clientes)
-    );
+
+    return cliente ? this.mapToEntity(cliente) : null;
   }
 
-
   /** Atualizando o cliente pelo seu ID */
- async update(id: string, updateClienteDto: UpdateClienteDto): Promise<Cliente> {
+  async update(
+    id: string,
+    updateClienteDto: UpdateClienteDto,
+  ): Promise<Cliente> {
     const cliente = await this.prisma.cliente.update({
       where: { id: id.toString() },
       data: updateClienteDto,
