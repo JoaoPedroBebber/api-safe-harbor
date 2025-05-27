@@ -36,8 +36,16 @@ export class ClientesService {
   }
 
   /** Encontrando todos os Clientes */
-  async findAll(): Promise<Cliente[]> {
-    const clientes = await this.prisma.cliente.findMany();
+  async findAll(nome?: string, email?: string): Promise<Cliente[]> {
+    const clientes = await this.prisma.cliente.findMany({
+      where: {
+        ...(nome && { nome: { contains: nome, mode: 'insensitive' } }),
+        ...(email && { email: { contains: email, mode: 'insensitive' } }),
+      },
+      orderBy: {
+        nome: 'asc', // Ordena por nome por padrão
+      },
+    });
 
     return clientes.map((clientes) => this.mapToEntity(clientes));
   }
