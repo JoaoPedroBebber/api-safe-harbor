@@ -13,11 +13,16 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Cliente {
+model User {
   id           String   @id @default(cuid())
   nome         String
   email        String   
-  telefone     String?
-  endereco     String?
+  senhaHash    String
+  dataCadastro DateTime @default(now())
+}
+
+model AnotacaoDiario {
+  id           String   @id @default(cuid())
+  conteudo     String
   dataCadastro DateTime @default(now())
 }

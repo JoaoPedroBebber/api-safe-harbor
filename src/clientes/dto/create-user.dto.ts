@@ -8,8 +8,5 @@ export class CreateClienteDto {
   email: string;
 
   @IsString()
-  telefone: string;
-
-  @IsString()
-  endereco: string;
+  senhaHash: string;
 }
