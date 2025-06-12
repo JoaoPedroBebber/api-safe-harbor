@@ -21,8 +21,9 @@ model User {
   dataCadastro DateTime @default(now())
 }
 
-model AnotacaoDiario {
+model Diario {
   id           String   @id @default(cuid())
+  idUser       String
   conteudo     String
   dataCadastro DateTime @default(now())
 }
