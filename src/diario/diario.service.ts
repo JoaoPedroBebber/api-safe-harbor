@@ -18,61 +18,59 @@ export class DiarioService {
     };
   }
 
-  /** Criando novo Cliente */
-  async create(createUserDto: CreateUserDto): Promise<User> {
-    const user = await this.prisma.user.create({
+  /** Criando novo Diario */
+  async create(createDiarioDto: CreateDiarioDto): Promise<Diario> {
+    const diario = await this.prisma.diario.create({
       data: {
-        nome: createUserDto.nome,
-        email: createUserDto.email,
-        senhaHash: createUserDto.senhaHash,
+        idUser: createDiarioDto.idUser,
+        conteudo: createDiarioDto.conteudo,
         dataCadastro: new Date(),
       },
     });
 
-    return this.mapToEntity(user);
+    return this.mapToEntity(diario);
   }
 
-  /** Encontrando todos os User */
-  async findAll(nome?: string, email?: string): Promise<User[]> {
-    const user = await this.prisma.user.findMany({
+  /** Encontrando todos os Diarios */
+  async findAll(idUser?: string): Promise<Diario[]> {
+    const diarios = await this.prisma.diario.findMany({
       where: {
-        ...(nome && { nome: { contains: nome, mode: 'insensitive' } }),
-        ...(email && { email: { contains: email, mode: 'insensitive' } }),
+        ...(idUser && { idUser: { contains: idUser, mode: 'insensitive' } }),
       },
       orderBy: {
-        nome: 'asc', // Ordena por nome por padrão
+        idUser: 'asc', // Ordena por idUser por padrão
       },
     });
 
-    return clientes.map((user) => this.mapToEntity(user));
+    return diarios.map((diario) => this.mapToEntity(diario));
   }
 
   /** Encontrando o cliente pelo seu ID  */
   async findOne(id: String) {
-    const user = await this.prisma.user.findUnique({
+    const diario = await this.prisma.diario.findUnique({
       where: { id: id.toString() },
     });
 
-    return user ? this.mapToEntity(user) : null;
+    return diario ? this.mapToEntity(diario) : null;
   }
 
   /** Atualizando o cliente pelo seu ID */
   async update(
     id: string,
-    updateUserDto: UpdateUserDto,
-  ): Promise<Cliente> {
-    const users = await this.prisma.user.update({
+    updateDiarioDto: UpdateDiarioDto,
+  ): Promise<Diario> {
+    const diario = await this.prisma.diario.update({
       where: { id: id.toString() },
-      data: updateUserDto,
+      data: updateDiarioDto,
     });
-    return this.mapToEntity(user);
+    return this.mapToEntity(diario);
   }
 
   /** Deletando o cliente pelo seu ID */
-  async remove(id: string): Promise<User> {
-    const user = await this.prisma.user.delete({
+  async remove(id: string): Promise<Diario> {
+    const diario = await this.prisma.diario.delete({
       where: { id: id.toString() },
     });
-    return this.mapToEntity(user);
+    return this.mapToEntity(diario);
   }
 }

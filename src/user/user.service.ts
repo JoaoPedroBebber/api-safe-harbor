@@ -45,10 +45,10 @@ export class UserService {
       },
     });
 
-    return clientes.map((user) => this.mapToEntity(user));
+    return user.map((user) => this.mapToEntity(user));
   }
 
-  /** Encontrando o cliente pelo seu ID  */
+  /** Encontrando o user pelo seu ID  */
   async findOne(id: String) {
     const user = await this.prisma.user.findUnique({
       where: { id: id.toString() },
@@ -57,19 +57,19 @@ export class UserService {
     return user ? this.mapToEntity(user) : null;
   }
 
-  /** Atualizando o cliente pelo seu ID */
+  /** Atualizando o user pelo seu ID */
   async update(
     id: string,
     updateUserDto: UpdateUserDto,
-  ): Promise<Cliente> {
-    const users = await this.prisma.user.update({
+  ): Promise<User> {
+    const user = await this.prisma.user.update({
       where: { id: id.toString() },
       data: updateUserDto,
     });
     return this.mapToEntity(user);
   }
 
-  /** Deletando o cliente pelo seu ID */
+  /** Deletando o user pelo seu ID */
   async remove(id: string): Promise<User> {
     const user = await this.prisma.user.delete({
       where: { id: id.toString() },

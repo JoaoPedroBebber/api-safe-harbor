@@ -7,6 +7,4 @@ export class CreateDiarioDto {
   @IsString()
   conteudo: string;
 
-  @IsString()
-  senhaHash: string;
 }
