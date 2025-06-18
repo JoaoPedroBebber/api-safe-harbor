@@ -12,8 +12,8 @@ export class DiarioService {
   private mapToEntity(diario: any): Diario {
     return {
       id: diario.id,
-      idUser: diario.nome,
-      conteudo: diario.email,
+      idUser: diario.idUser,
+      conteudo: diario.conteudo,
       dataCadastro: diario.dataCadastro,
     };
   }

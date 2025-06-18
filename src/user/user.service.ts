@@ -19,7 +19,7 @@ export class UserService {
     };
   }
 
-  /** Criando novo Cliente */
+  /** Criando novo User */
   async create(createUserDto: CreateUserDto): Promise<User> {
     const user = await this.prisma.user.create({
       data: {
